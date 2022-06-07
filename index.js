@@ -79,6 +79,13 @@ async function run() {
             res.send(result);
         })
 
+        app.get('/applications/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email: email };
+            const applications = await applicationCollection.findOne(query);
+
+            return res.send(applications);
+        })
 
         app.put('/applications/:email', async (req, res) => {
             const email = req.params.email;
