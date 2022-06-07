@@ -16,7 +16,93 @@ async function run() {
     try {
         await client.connect();
 
-        const collection = client.db("loan-application-site").collection("applicationInfos");
+        const profilesCollection = client.db("loan-application-site").collection("profiles");
+        const businessDetailsCollection = client.db("loan-application-site").collection("businessDetails");
+        const applicationCollection = client.db("loan-application-site").collection("applicationInfos");
+
+
+        app.get('/profile/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email: email };
+            const profile = await profilesCollection.findOne(query);
+
+            return res.send(profile);
+        })
+
+        app.put('/profile/:email', async (req, res) => {
+            const email = req.params.email;
+            const profile = req.body;
+            const filter = { email: email };
+            const options = { upsert: true };
+
+            // console.log(profile)
+
+            const updateDoc = {
+                $set: {
+                    name: profile.name,
+                    age: profile.age,
+                    mobile: profile.mobile,
+                    email: profile.email,
+                    location: profile.location
+                },
+            };
+            const result = await profilesCollection.updateOne(filter, updateDoc, options);
+
+            res.send(result);
+        })
+
+        app.get('/business/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email: email };
+            const business = await businessDetailsCollection.findOne(query);
+
+            return res.send(business);
+        })
+
+        app.put('/business/:email', async (req, res) => {
+            const email = req.params.email;
+            const business = req.body;
+            const filter = { email: email };
+            const options = { upsert: true };
+
+            // console.log(profile)
+
+            const updateDoc = {
+                $set: {
+                    email: business.email,
+                    businessName: business.businessName,
+                    gst: business.gst,
+                    address: business.address,
+                    businessEmail: business.businessEmail
+                },
+            };
+            const result = await businessDetailsCollection.updateOne(filter, updateDoc, options);
+
+            res.send(result);
+        })
+
+
+        /* app.put('/application/:email', async (req, res) => {
+            const email = req.params.email;
+            const application = req.body;
+            const filter = { email: email };
+            const options = { upsert: true };
+
+            // console.log(profile)
+
+            const updateDoc = {
+                $set: {
+                    email: business.email,
+                    businessName: business.businessName,
+                    gst: business.gst,
+                    address: business.address,
+                    businessEmail: business.businessEmail
+                },
+            };
+            const result = await applicationCollection.updateOne(filter, updateDoc, options);
+
+            res.send(result);
+        }) */
     }
     finally {
 
