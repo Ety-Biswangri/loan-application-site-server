@@ -65,8 +65,6 @@ async function run() {
             const filter = { email: email };
             const options = { upsert: true };
 
-            // console.log(profile)
-
             const updateDoc = {
                 $set: {
                     email: business.email,
@@ -82,27 +80,25 @@ async function run() {
         })
 
 
-        /* app.put('/application/:email', async (req, res) => {
+        app.put('/applications/:email', async (req, res) => {
             const email = req.params.email;
-            const application = req.body;
+            const applications = req.body;
             const filter = { email: email };
             const options = { upsert: true };
 
-            // console.log(profile)
-
             const updateDoc = {
                 $set: {
-                    email: business.email,
-                    businessName: business.businessName,
-                    gst: business.gst,
-                    address: business.address,
-                    businessEmail: business.businessEmail
+                    email: applications.email,
+                    amount: applications.amount,
+                    interest: applications.interest,
+                    tenure: applications.tenure,
+                    monthlyPayment: applications.monthlyPayment
                 },
             };
             const result = await applicationCollection.updateOne(filter, updateDoc, options);
 
             res.send(result);
-        }) */
+        })
     }
     finally {
 
